@@ -1,0 +1,17 @@
+{:itonami.blueprint/id "cloud-itonami-isic-7830"
+ :itonami.blueprint/name "Governed Payroll Processing and Administration Actor"
+ :itonami.blueprint/isic-rev5 "7830"
+ :itonami.blueprint/domain :labor/payroll-administration
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:correct-withholding :timely-statutory-filing :employee-dispute-protection]
+ :itonami.blueprint/governor :payroll-governor
+ :itonami.blueprint/robotics false
+ :itonami.blueprint/required-technologies [:identity :audit-ledger]
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/implemented-slice
+ "PayrollProcessor-LLM sealed advisor wrapped by an independent
+ PayrollGovernor (src/payroll/policy.cljk:
+ tax-withholding-calculation-gate, filing-deadline-gate,
+ source-provenance-gate), a langgraph StateGraph and an append-only
+ audit ledger. The client stays the legal employer; the actor makes no
+ employment or benefits-eligibility decision."}
