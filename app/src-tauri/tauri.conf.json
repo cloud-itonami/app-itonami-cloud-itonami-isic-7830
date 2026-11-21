@@ -19,7 +19,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'none'; script-src 'self' 'sha256-JEOuT1vHljEHI0xxIewRO/7Cccry2rV3V3NYEYMlVIU=' 'sha256-U/ZWT93HTJboamilXXD8GMMV1iUoW+pOG80UTZRW19Q='; style-src 'self' 'sha256-a4cld4Mo547KwQQd5y4BgrBdILB0yzzzmLSqLsnmvUM='; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+      "csp": "default-src 'none'; script-src 'self' 'sha256-JEOuT1vHljEHI0xxIewRO/7Cccry2rV3V3NYEYMlVIU=' 'sha256-U/ZWT93HTJboamilXXD8GMMV1iUoW+pOG80UTZRW19Q='; style-src 'self' 'sha256-jiOKF9XesrSxi/to8jKWiOoImLJfJUnkGWRIosii+PY='; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
     }
   },
   "bundle": {

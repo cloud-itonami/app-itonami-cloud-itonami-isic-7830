@@ -8,7 +8,7 @@ import { existsSync } from "node:fs";
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { cspFor, profileOf } from "./build.mjs";
 import { iconSvg } from "./icon.mjs";
 import { deriveIdentity, readBlueprint } from "./identity.mjs";
@@ -21,6 +21,7 @@ export const TEMPLATE_FILES = [
   "README.md",
   "android/MainActivity.kt",
   "scripts/android-apk.sh",
+  "scripts/android-manifest.mjs",
   "scripts/build.mjs",
   "scripts/console.mjs",
   "scripts/edn.mjs",
@@ -43,10 +44,13 @@ export const TEMPLATE_FILES = [
   "src-tauri/capabilities/main.json",
   "src-tauri/src/lib.rs",
   "src-tauri/src/main.rs",
+  "test/android-manifest.test.mjs",
   "test/attribution.test.mjs",
   "test/build.test.mjs",
+  "test/cargo-lock.test.mjs",
   "test/console.test.mjs",
   "test/identity.test.mjs",
+  "test/layout.test.mjs",
   "test/profile.test.mjs",
   "test/release-source.test.mjs",
   "test/scaffold.test.mjs",
@@ -117,7 +121,7 @@ export async function scaffold(repoRoot, { icons = true, repo: repoName = null }
 
   if (!selfRun) {
     for (const name of TEMPLATE_FILES) {
-      await mkdir(join(app, name.slice(0, name.lastIndexOf("/"))), { recursive: true });
+      await mkdir(dirname(join(app, name)), { recursive: true });
       await copyFile(join(HERE, name), join(app, name));
     }
     await execFileSync("chmod", ["755", join(app, "scripts/android-apk.sh")]);
