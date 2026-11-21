@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -196,4 +196,19 @@ test("scaffold keeps an existing workflow and a set version", async (t) => {
   assert.equal(pkg.version, "0.2.0");
   const conf = JSON.parse(await readFile(join(repo, "app/src-tauri/tauri.conf.json"), "utf8"));
   assert.equal(conf.version, "0.2.0");
+});
+
+test("scaffold makes no directory for a top-level template file", async (t) => {
+  const repo = await stamped(BLUEPRINT_ISCO);
+  t.after(() => rm(repo, { recursive: true, force: true }));
+  await scaffold(repo, { icons: false, repo: "cloud-itonami-isco-2423" });
+  // A top-level file such as README.md once made an empty app/README.m/ directory.
+  const expected = new Set(TEMPLATE_FILES.map((name) => name.split("/")[0]));
+  for (const extra of ["package.json", "icon", "src-tauri"]) expected.add(extra);
+  for (const entry of readdirSync(join(repo, "app"), { withFileTypes: true })) {
+    assert.ok(expected.has(entry.name), `unexpected app/${entry.name}${entry.isDirectory() ? "/" : ""}`);
+  }
+  for (const name of TEMPLATE_FILES.filter((n) => !n.includes("/"))) {
+    assert.ok(!existsSync(join(repo, "app", name.slice(0, -1))), `no app/${name.slice(0, -1)}/`);
+  }
 });
